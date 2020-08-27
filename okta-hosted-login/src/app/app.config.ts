@@ -9,6 +9,9 @@ export default {
     pkce: true,
     testing: {
       disableHttpsCheck: `${OKTA_TESTING_DISABLEHTTPSCHECK}`
+    },
+    tokenManager: {
+      // storage: {}
     }
   },
   resourceServer: {
