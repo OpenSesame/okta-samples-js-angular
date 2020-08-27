@@ -13,6 +13,9 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { OktaAuthService } from '@okta/okta-angular';
+import {fromPromise} from "rxjs/internal-compatibility";
+import {mergeMap} from "rxjs/operators";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
@@ -22,11 +25,38 @@ import { OktaAuthService } from '@okta/okta-angular';
 export class AppComponent implements OnInit {
   title = 'app';
   isAuthenticated: boolean;
-  constructor(public oktaAuth: OktaAuthService, private router: Router) {
-    this.oktaAuth.$authenticationState.subscribe(isAuthenticated => this.isAuthenticated = isAuthenticated);
+  constructor(public oktaAuth: OktaAuthService, private router: Router, private httpClient: HttpClient) {
+    this.oktaAuth.$authenticationState.subscribe(isAuthenticated => {
+      this.isAuthenticated = isAuthenticated;
+    });
+
+    this.oktaAuth.$authenticationState
+      .pipe(
+        mergeMap(() => fromPromise(this.oktaAuth.getIdToken()))
+      )
+      .subscribe(idToken => {
+        console.log(idToken);
+      });
+
   }
   async ngOnInit() {
     this.isAuthenticated = await this.oktaAuth.isAuthenticated();
+    console.log('isAuthenticated: ', this.isAuthenticated);
+    const idToken = await this.oktaAuth.getIdToken();
+    console.log('id_token: ', idToken);
+
+    if (this.isAuthenticated) {
+      const body = new URLSearchParams();
+      body.set('', idToken);
+
+      this.httpClient.post('https://local-catalog.dev.opensesame.com/fl/auth/token', {
+        id_token: idToken
+      })
+        .subscribe(response => {
+          console.log('drupal auth: ', response);
+        });
+    }
+
   }
   login() {
     this.oktaAuth.loginRedirect();
