@@ -5,7 +5,6 @@ npm-debug.log
 travis_phantomjs
 okta-oidc-tck
 .DS_Store
-.vscode
 .samples.config.ts
 .samples.config.ts--
 samples-java-spring-mvc
