@@ -1,3 +1,14 @@
+
+```
+    location ^~ /oktapoc {
+        resolver 8.8.8.8 valid=3600s;
+        proxy_pass $okta_poc_url;
+    }
+```
+
+
+
+
 # Angular Sample Applications for Okta
 
 This repository contains several sample applications that demonstrate various Okta use-cases in your Angular application.
