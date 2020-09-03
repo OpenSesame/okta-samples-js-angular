@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
 
   async login() {
     try {
-      await this.oktaAuth.loginRedirect();
+      await this.oktaAuth.loginRedirect('/oktapoc');
     } catch (err) {
       console.error(err);
       this.error = err;

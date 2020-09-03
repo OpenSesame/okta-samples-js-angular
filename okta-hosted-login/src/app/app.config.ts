@@ -4,17 +4,17 @@ export default {
   oidc: {
     clientId: `${CLIENT_ID}`,
     issuer: `${ISSUER}`,
-    redirectUri: 'http://localhost:8080/implicit/callback',
+    redirectUri: 'https://local-catalog.dev.opensesame.com/oktapoc/implicit/callback',
     scopes: ['openid', 'profile', 'email'],
     pkce: true,
     testing: {
       disableHttpsCheck: `${OKTA_TESTING_DISABLEHTTPSCHECK}`
     },
     tokenManager: {
-      // storage: {}
+      // storage: 'memory'
     }
   },
   resourceServer: {
-    messagesUrl: 'http://localhost:8000/api/messages',
+    messagesUrl: 'https://local-catalog.dev.opensesame.com/oktapoc/api/messages',
   },
 };

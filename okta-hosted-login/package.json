@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve  --host=0.0.0.0 --sourceMap --base-href=/oktapoc/ --port=4300 --deploy-url=/oktapoc/ --liveReload=false",
     "build": "ng build --prod",
     "test": "npm run lint && npm run test:okta-hosted-login --prefix ../",
     "lint": "ng lint"

@@ -16,6 +16,8 @@ import { OktaAuthService } from '@okta/okta-angular';
 import {fromPromise} from "rxjs/internal-compatibility";
 import {mergeMap} from "rxjs/operators";
 import {HttpClient} from "@angular/common/http";
+// import getSession from '@okta/okta-auth-js';
+import OktaAuth from '@okta/okta-auth-js';
 
 @Component({
   selector: 'app-root',
@@ -40,6 +42,12 @@ export class AppComponent implements OnInit {
 
   }
   async ngOnInit() {
+    // getSession(this.oktaAuth.getOktaConfig()).then(response => console.log('getSession', response));
+
+    const temp = new OktaAuth(this.oktaAuth.getOktaConfig());
+    temp.session.get().then(response => console.log('getSession', response));
+    console.log(this.oktaAuth);
+
     this.isAuthenticated = await this.oktaAuth.isAuthenticated();
     console.log('isAuthenticated: ', this.isAuthenticated);
     const idToken = await this.oktaAuth.getIdToken();
@@ -59,9 +67,10 @@ export class AppComponent implements OnInit {
 
   }
   login() {
-    this.oktaAuth.loginRedirect();
+    this.oktaAuth.login();
+    // this.oktaAuth.loginRedirect('https://local-catalog.dev.opensesame.com/oktapoc/');
   }
   logout() {
-    this.oktaAuth.logout('/');
+    this.oktaAuth.logout('https://local-catalog.dev.opensesame.com/oktapoc/');
   }
 }
