@@ -52,23 +52,10 @@ export class AppComponent implements OnInit {
     console.log('isAuthenticated: ', this.isAuthenticated);
     const idToken = await this.oktaAuth.getIdToken();
     console.log('id_token: ', idToken);
-
-    if (this.isAuthenticated) {
-      const body = new URLSearchParams();
-      body.set('', idToken);
-
-      this.httpClient.post('https://local-catalog.dev.opensesame.com/fl/auth/token', {
-        id_token: idToken
-      })
-        .subscribe(response => {
-          console.log('drupal auth: ', response);
-        });
-    }
-
   }
   login() {
-    this.oktaAuth.login();
-    // this.oktaAuth.loginRedirect('https://local-catalog.dev.opensesame.com/oktapoc/');
+    console.log('okta login redirect');
+    this.oktaAuth.loginRedirect('https://local-catalog.dev.opensesame.com/fl/auth/token?redirect_to=/dashboard&XDEBUG_SESSION_START=1');
   }
   logout() {
     this.oktaAuth.logout('https://local-catalog.dev.opensesame.com/oktapoc/');

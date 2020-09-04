@@ -1,0 +1,56 @@
+{
+    "deploy": {
+        "openOutputOnDeploy": false,
+        "showPopupOnSuccess": false,
+        "targets": [
+            {
+                "type": "sftp",
+                "name": "Local Env",
+                "description": "A SFTP folder",
+                "dir": "/usr/local/src/okta-poc",
+                "host": "local-catalog.dev.opensesame.com",
+                "port": 22,
+                "user": "root",
+                "password": "Drupalc0n",
+                "checkBeforeDeploy": false,
+                "noCommandOutput": true,
+                "mappings": [
+                    {
+                        "source": "/",
+                        "target": "/"
+                    }
+                ]
+            },
+        ],
+        "packages": [
+            {
+                "name": "okta-poc",
+                "files": [
+                    "**/*"
+                ],
+                "exclude": [
+                    ".vscode/**",
+                    ".github/**",
+                    ".idea/**",
+                    ".git/**",
+                    "dist/**",
+                    "files/**",
+                    "output/**",
+                    "node_modules/**"
+                ],
+                "noNodeModules": true,
+                "deployOnSave": true,
+                "deployOnChange": true,
+                "syncWhenOpen": true
+            }
+        ]
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/dist": true
+    }
+}
