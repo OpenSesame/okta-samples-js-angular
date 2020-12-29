@@ -25,7 +25,17 @@ export class AppComponent implements OnInit {
   baseUri: string;
 
   constructor(public oktaAuth: OktaAuthService) {
-    this.oktaAuth.$authenticationState.subscribe(isAuthenticated => this.isAuthenticated = isAuthenticated);
+    this.oktaAuth.$authenticationState.subscribe(isAuthenticated => {
+      this.isAuthenticated = isAuthenticated;
+
+      this.oktaAuth.isAuthenticated().then( item => console.log('this.isAuthenticated', item));
+      try {
+        this.oktaAuth.getUser().then(item => console.log('userClaims', item));
+      } catch (e) {
+        console.error(e);
+      }
+    });
+
   }
 
   async ngOnInit() {

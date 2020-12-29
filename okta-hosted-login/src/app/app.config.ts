@@ -2,6 +2,7 @@ const { CLIENT_ID, ISSUER, OKTA_TESTING_DISABLEHTTPSCHECK } = process.env;
 
 export default {
   oidc: {
+    devMode: true,
     clientId: `${CLIENT_ID}`,
     issuer: `${ISSUER}`,
     redirectUri: '/login/callback',

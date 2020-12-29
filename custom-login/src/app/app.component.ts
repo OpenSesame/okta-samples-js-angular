@@ -12,6 +12,8 @@
 
 import { Component, OnInit } from '@angular/core';
 import { OktaAuthService } from '@okta/okta-angular';
+import {Title} from "@angular/platform-browser";
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -21,13 +23,15 @@ import { OktaAuthService } from '@okta/okta-angular';
 export class AppComponent implements OnInit {
   title = 'app';
   isAuthenticated: boolean;
+  headerName = environment.name;
 
-  constructor(public oktaAuth: OktaAuthService) {
+  constructor(public oktaAuth: OktaAuthService, private titleService: Title) {
     this.oktaAuth.$authenticationState.subscribe(isAuthenticated => this.isAuthenticated = isAuthenticated);
   }
 
   async ngOnInit() {
     this.isAuthenticated = await this.oktaAuth.isAuthenticated();
+    this.titleService.setTitle(environment.name);
   }
 
   logout() {

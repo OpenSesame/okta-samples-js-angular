@@ -54,8 +54,10 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit() {
     this.isAuthenticated = await this.oktaAuth.isAuthenticated();
+    console.log('this.isAuthenticated', this.isAuthenticated);
     if (this.isAuthenticated) {
       const userClaims = await this.oktaAuth.getUser();
+      console.log('userClaims', userClaims);
       this.userName = userClaims.name;
     }
   }
