@@ -10,11 +10,12 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { Component, OnInit } from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import { OktaAuthService } from "@okta/okta-angular";
 import * as OktaSignIn from "@okta/okta-signin-widget";
 import sampleConfig from "../app.config";
 import {environment} from "../../environments/environment";
+import {Router} from "@angular/router";
 
 const DEFAULT_ORIGINAL_URI = window.location.origin;
 
@@ -23,9 +24,9 @@ const DEFAULT_ORIGINAL_URI = window.location.origin;
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   signIn: any;
-  constructor(public oktaAuth: OktaAuthService) {
+  constructor(public oktaAuth: OktaAuthService, router: Router) {
     console.log('environment', environment);
     this.signIn = new OktaSignIn({
       /**
@@ -52,23 +53,28 @@ export class LoginComponent implements OnInit {
       //     id: "0oavt35l5i27GsgCf0h7",
       //   },
       // ],
-
       registration: {
-        parseSchema: function(schema, onSuccess, onFailure) {
-          console.log("parseSchema", schema);
-          onSuccess(schema);
-        },
-        preSubmit: function (postData, onSuccess, onFailure) {
-          console.log(environment);
-          postData.pocContext = environment.id;
-          console.log("preSubmit", postData);
-          onSuccess(postData);
-        },
-        postSubmit: function (response, onSuccess, onFailure) {
-          console.log("postSubmit", response);
-          onSuccess(response);
+        click: function() {
+          router.navigate(['/register']);
         }
       },
+      // self serve registration
+      // registration: {
+      //   parseSchema: function(schema, onSuccess, onFailure) {
+      //     console.log("parseSchema", schema);
+      //     onSuccess(schema);
+      //   },
+      //   preSubmit: function (postData, onSuccess, onFailure) {
+      //     console.log(environment);
+      //     postData.pocContext = environment.id;
+      //     console.log("preSubmit", postData);
+      //     onSuccess(postData);
+      //   },
+      //   postSubmit: function (response, onSuccess, onFailure) {
+      //     console.log("postSubmit", response);
+      //     onSuccess(response);
+      //   }
+      // },
       features: {
         // Used to enable registration feature on the widget.
         // https://github.com/okta/okta-signin-widget#feature-flags
@@ -108,5 +114,9 @@ export class LoginComponent implements OnInit {
         // Typically due to misconfiguration
         throw err;
       });
+  }
+
+  ngOnDestroy() {
+    this.signIn.remove();
   }
 }
