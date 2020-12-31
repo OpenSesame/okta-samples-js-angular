@@ -12,6 +12,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { OktaAuthService } from '@okta/okta-angular';
+import {environment} from '../../environments/environment';
 
 interface ResourceServerExample {
   label: string;
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit {
   isAuthenticated: boolean;
   resourceServerExamples: Array<ResourceServerExample>;
   userName: string;
+  title = environment.name;
 
   constructor(public oktaAuth: OktaAuthService) {
     this.resourceServerExamples = [

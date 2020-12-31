@@ -10,10 +10,12 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { Component, OnInit } from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import { OktaAuthService } from "@okta/okta-angular";
 import * as OktaSignIn from "@okta/okta-signin-widget";
 import sampleConfig from "../app.config";
+import {environment} from "../../environments/environment";
+import {Router} from "@angular/router";
 
 const DEFAULT_ORIGINAL_URI = window.location.origin;
 
@@ -22,9 +24,10 @@ const DEFAULT_ORIGINAL_URI = window.location.origin;
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.css"],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   signIn: any;
-  constructor(public oktaAuth: OktaAuthService) {
+  constructor(public oktaAuth: OktaAuthService, router: Router) {
+    console.log('environment', environment);
     this.signIn = new OktaSignIn({
       /**
        * Note: when using the Sign-In Widget for an OIDC flow, it still
@@ -42,13 +45,42 @@ export class LoginComponent implements OnInit {
       },
       authParams: {
         issuer: sampleConfig.oidc.issuer,
+        pkce: true
       },
-      idps: [
-        {
-          type: "GOOGLE",
-          id: "0oavt35l5i27GsgCf0h7",
-        },
-      ],
+      // idps: [
+      //   {
+      //     type: "GOOGLE",
+      //     id: "0oavt35l5i27GsgCf0h7",
+      //   },
+      // ],
+      registration: {
+        click: function() {
+          router.navigate(['/register']);
+        }
+      },
+      // self serve registration
+      // registration: {
+      //   parseSchema: function(schema, onSuccess, onFailure) {
+      //     console.log("parseSchema", schema);
+      //     onSuccess(schema);
+      //   },
+      //   preSubmit: function (postData, onSuccess, onFailure) {
+      //     console.log(environment);
+      //     postData.pocContext = environment.id;
+      //     console.log("preSubmit", postData);
+      //     onSuccess(postData);
+      //   },
+      //   postSubmit: function (response, onSuccess, onFailure) {
+      //     console.log("postSubmit", response);
+      //     onSuccess(response);
+      //   }
+      // },
+      features: {
+        // Used to enable registration feature on the widget.
+        // https://github.com/okta/okta-signin-widget#feature-flags
+        registration: true // REQUIRED
+      }
+
     });
   }
 
@@ -59,6 +91,12 @@ export class LoginComponent implements OnInit {
         scopes: sampleConfig.oidc.scopes,
       })
       .then((tokens) => {
+        console.log("tokens", tokens);
+
+        console.log(this.oktaAuth.getOktaConfig());
+        console.log(this.oktaAuth.authStateManager.getAuthState());
+        console.log(this.oktaAuth.getIdToken());
+
         // When navigating to a protected route, the route path will be saved as the `originalUri`
         // If no `originalUri` has been saved, then redirect back to the app root
         const originalUri = this.oktaAuth.getOriginalUri();
@@ -76,5 +114,9 @@ export class LoginComponent implements OnInit {
         // Typically due to misconfiguration
         throw err;
       });
+  }
+
+  ngOnDestroy() {
+    this.signIn.remove();
   }
 }

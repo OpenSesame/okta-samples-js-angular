@@ -1,4 +1,4 @@
-<h1 class="ui header">Custom Login Page with Sign In Widget</h1>
+<h1 class="ui header">{{title}}</h1>
 <div *ngIf="!isAuthenticated">
   <p>If you‘re viewing this page then you have successfully started this Angular application.</p>
   <p>This example shows you how to use the
@@ -31,3 +31,5 @@
   </ul>
   <p>Once you have downloaded and started the example resource server, you can visit the <a href="/messages">My Messages</a> page to see the authentication process in action.</p>
 </div>
+
+<app-add-group [blah]="oktaAuth"></app-add-group>

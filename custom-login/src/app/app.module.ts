@@ -36,6 +36,9 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AddGroupComponent } from './add-group/add-group.component';
+import { RegisterComponent } from './register/register.component';
+import {FormsModule} from "@angular/forms";
 
 const appRoutes: Routes = [
   {
@@ -49,6 +52,10 @@ const appRoutes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
   },
   {
     path: 'profile',
@@ -69,12 +76,15 @@ const appRoutes: Routes = [
     ProfileComponent,
     MessagesComponent,
     LoginComponent,
+    AddGroupComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     OktaAuthModule,
+    FormsModule,
   ],
   providers: [
     { provide: OKTA_CONFIG, useValue: oktaConfig },
