@@ -1,3 +1,19 @@
+
+#Okta POC Setup
+
+- `cd custom-login`
+- `npm install`
+- To start the application run either of these to simulate those applications:
+  - `npm run start:catalog`
+  - `npm run start:simon`
+- To view these applications, navigate to the respective URL:
+  - catalog: http://localhost:8082
+  - simon: http://localhost:8081
+
+See for more details: https://opensesame.atlassian.net/wiki/spaces/CORE/pages/1216118791
+
+#BELOW IS ORIGINAL FORKED REPO README
+
 # Angular Sample Applications for Okta
 
 This repository contains several sample applications that demonstrate various Okta use-cases in your Angular application.
